@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            // splitToDetail.py  debug arguments
+            // splitToDetail_snap.py  debug arguments
             // "args": ["-d","csvs"]
             "args": ["csvs/DCE_L1_20170512.csv"]
             // writePathToDB.py debug arguments
