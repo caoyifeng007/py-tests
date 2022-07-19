@@ -1,9 +1,9 @@
-import os
-import sqlite3
 import argparse
-import sys
-import re
 import datetime
+import os
+import re
+import sqlite3
+import sys
 
 
 def getExtension(file):
@@ -16,11 +16,10 @@ def getBareName(file):
 
 parser = argparse.ArgumentParser(description='品种路径写入脚本')
 parser.add_argument(
-    "-f", "--file",  help="specify a full path of sqlite3 db file. eg: a/b.db")
+    "-f", "--file", help="specify a full path of sqlite3 db file. eg: a/b.db")
 parser.add_argument(
     "-d", "--folder", help="specify a parent folder of time. eg: x => x/20220906/.")
 args = parser.parse_args()
-
 
 if args.file:
     if os.path.isfile(args.file):
@@ -76,6 +75,11 @@ conn = sqlite3.connect(args.file)
 cur = conn.cursor()
 
 # 考虑一下重复执行的情况
+# 先删除日期为date的所有记录
+for item in valList:
+    cur.execute(f"DELETE FROM goods_models WHERE date = {item[3]}")
+# 再执行插入语句
 cur.executemany(
-    "insert into goods_models (created_at, updated_at,exchange, date, time_level, product, category, item, path) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", valList)
+    "insert into goods_models (created_at, updated_at,exchange, date, time_level, product, category, item, path) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    valList)
 conn.commit()
